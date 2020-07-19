@@ -54,6 +54,7 @@
             this.buttSignIn.TabIndex = 1;
             this.buttSignIn.Text = "Sign In";
             this.buttSignIn.UseVisualStyleBackColor = true;
+            this.buttSignIn.Click += new System.EventHandler(this.buttSignIn_Click);
             // 
             // buttLocal
             // 
@@ -73,6 +74,7 @@
             this.butSignUp.TabIndex = 3;
             this.butSignUp.Text = "Sign Up";
             this.butSignUp.UseVisualStyleBackColor = true;
+            this.butSignUp.Click += new System.EventHandler(this.butSignUp_Click);
             // 
             // tbName
             // 

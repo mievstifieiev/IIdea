@@ -67,6 +67,10 @@
             this.tbPoint = new System.Windows.Forms.TextBox();
             this.tbLink = new System.Windows.Forms.TextBox();
             this.btLink = new System.Windows.Forms.Button();
+            this.btDelete = new System.Windows.Forms.Button();
+            this.btChangeStat = new System.Windows.Forms.Button();
+            this.cbChange = new System.Windows.Forms.ComboBox();
+            this.tbIdStat = new System.Windows.Forms.TextBox();
             this.menuStripLocWork.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -134,12 +138,14 @@
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.saveAsToolStripMenuItem.Text = "Save &As";
+            this.saveAsToolStripMenuItem.Text = "Sync";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -333,7 +339,6 @@
             this.rtbList.Size = new System.Drawing.Size(740, 276);
             this.rtbList.TabIndex = 1;
             this.rtbList.Text = "";
-            this.rtbList.Visible = false;
             // 
             // btAdd
             // 
@@ -343,7 +348,6 @@
             this.btAdd.TabIndex = 2;
             this.btAdd.Text = "Add";
             this.btAdd.UseVisualStyleBackColor = true;
-            this.btAdd.Visible = false;
             this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
             // 
             // tbAncestor
@@ -354,7 +358,6 @@
             this.tbAncestor.PlaceholderText = "Ancestor Name";
             this.tbAncestor.Size = new System.Drawing.Size(333, 27);
             this.tbAncestor.TabIndex = 3;
-            this.tbAncestor.Visible = false;
             // 
             // tbPoint
             // 
@@ -363,16 +366,15 @@
             this.tbPoint.PlaceholderText = "Point\'s Name";
             this.tbPoint.Size = new System.Drawing.Size(333, 27);
             this.tbPoint.TabIndex = 6;
-            this.tbPoint.Visible = false;
             // 
             // tbLink
             // 
             this.tbLink.Location = new System.Drawing.Point(12, 99);
             this.tbLink.Name = "tbLink";
-            this.tbLink.PlaceholderText = "Link";
+            this.tbLink.PlaceholderText = "ID";
             this.tbLink.Size = new System.Drawing.Size(333, 27);
             this.tbLink.TabIndex = 7;
-            this.tbLink.Visible = false;
+            this.tbLink.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbLink_KeyPress);
             // 
             // btLink
             // 
@@ -382,13 +384,57 @@
             this.btLink.TabIndex = 8;
             this.btLink.Text = "Add Link";
             this.btLink.UseVisualStyleBackColor = true;
-            this.btLink.Visible = false;
+            this.btLink.Click += new System.EventHandler(this.btLink_Click);
+            // 
+            // btDelete
+            // 
+            this.btDelete.Location = new System.Drawing.Point(251, 132);
+            this.btDelete.Name = "btDelete";
+            this.btDelete.Size = new System.Drawing.Size(94, 29);
+            this.btDelete.TabIndex = 10;
+            this.btDelete.Text = "Delete";
+            this.btDelete.UseVisualStyleBackColor = true;
+            // 
+            // btChangeStat
+            // 
+            this.btChangeStat.Location = new System.Drawing.Point(658, 31);
+            this.btChangeStat.Name = "btChangeStat";
+            this.btChangeStat.Size = new System.Drawing.Size(94, 29);
+            this.btChangeStat.TabIndex = 11;
+            this.btChangeStat.Text = "Change";
+            this.btChangeStat.UseVisualStyleBackColor = true;
+            this.btChangeStat.Click += new System.EventHandler(this.btChangeStat_Click);
+            // 
+            // cbChange
+            // 
+            this.cbChange.FormattingEnabled = true;
+            this.cbChange.Items.AddRange(new object[] {
+            "not started",
+            "in progress",
+            "completed"});
+            this.cbChange.Location = new System.Drawing.Point(501, 31);
+            this.cbChange.Name = "cbChange";
+            this.cbChange.Size = new System.Drawing.Size(151, 28);
+            this.cbChange.TabIndex = 12;
+            // 
+            // tbIdStat
+            // 
+            this.tbIdStat.Location = new System.Drawing.Point(351, 31);
+            this.tbIdStat.Name = "tbIdStat";
+            this.tbIdStat.PlaceholderText = "ID for Changing";
+            this.tbIdStat.Size = new System.Drawing.Size(144, 27);
+            this.tbIdStat.TabIndex = 13;
+            this.tbIdStat.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbIdStat_KeyPress);
             // 
             // LocWork
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 460);
+            this.Controls.Add(this.tbIdStat);
+            this.Controls.Add(this.cbChange);
+            this.Controls.Add(this.btChangeStat);
+            this.Controls.Add(this.btDelete);
             this.Controls.Add(this.btLink);
             this.Controls.Add(this.tbLink);
             this.Controls.Add(this.tbPoint);
@@ -446,5 +492,9 @@
         private System.Windows.Forms.Button btLink;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Button btDelete;
+        private System.Windows.Forms.Button btChangeStat;
+        private System.Windows.Forms.ComboBox cbChange;
+        private System.Windows.Forms.TextBox tbIdStat;
     }
 }
