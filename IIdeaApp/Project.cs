@@ -19,6 +19,7 @@ namespace IIdeaApp
         [JsonIgnore]
         public List<int> levels = new List<int>();
         public string status;
+        public bool ignore = false;
         
 
         public Project()
@@ -113,14 +114,17 @@ namespace IIdeaApp
 
         public void toJSONstring(List<string> vs)
         {
-            vs.Add(name);
-            vs.Add(ancestor);
-            vs.Add(id.ToString());
-            vs.Add(links[0].ToString());
-            vs.Add(status);
-            foreach (var item in part)
+            if (ignore == false)
             {
-                item.toJSONstring(vs);
+                vs.Add(name);
+                vs.Add(ancestor);
+                vs.Add(id.ToString());
+                vs.Add(links[0].ToString());
+                vs.Add(status);
+                foreach (var item in part)
+                {
+                    item.toJSONstring(vs);
+                }
             }
         }
 
@@ -133,67 +137,70 @@ namespace IIdeaApp
 
         public string WritePrList(string prList, List<int> counter, List<int> lev)
         {
-            if (counter.Count > 0)
+            if (ignore == false)
             {
-                for (int i = 0; i < counter.Count; i++)
+                if (counter.Count > 0)
                 {
-                    prList += " ";
-                }
-            }
-
-            int co = part.Count;
-
-            if (counter.Count > 0)
-            {
-                foreach (var item in counter)
-                {
-                    prList += item.ToString() + ".";
-                }
-            }
-            //lev.Add(0);
-            //List<int> ct2 = lev;
-            prList +=" " +id+ " " + name + "; Status: " + status;
-
-            if (co>0)
-            {
-                int j = 0;
-                for (int i = 0; i < co; i++)
-                {
-                    if (part[i].status.IndexOf("completed")>-1)
+                    for (int i = 0; i < counter.Count; i++)
                     {
-                        j++;
+                        prList += " ";
                     }
                 }
-                double pr = 100 / (double)co * j;
-                prList += " completed by " + pr.ToString() + "% |";
-            }
 
-            if (links.Count > 0)
-            {
-                prList += " Links: ";
-                foreach (var item in links)
-                {
-                    prList += item + " | ";
-                }
-            }
-            prList += "\n";
+                int co = part.Count;
 
-            if (part.Count > 0)
-            {
-                lev.Add(0);
-                List<int> ct2 = lev;
-                int k = counter.Count;
-                counter.Add(1);
-                for (int i = 0; i < part.Count; i++)
+                if (counter.Count > 0)
                 {
-                    List<int> ct = new List<int>();
                     foreach (var item in counter)
                     {
-                        ct.Add(item);
+                        prList += item.ToString() + ".";
                     }
-                    prList = part[i].WritePrList(prList, ct, ct2);
-                    counter[k]++;
-                    lev[k]++;
+                }
+                //lev.Add(0);
+                //List<int> ct2 = lev;
+                prList += " " + id + " " + name + "; Status: " + status;
+
+                if (co > 0)
+                {
+                    int j = 0;
+                    for (int i = 0; i < co; i++)
+                    {
+                        if (part[i].status.IndexOf("completed") > -1)
+                        {
+                            j++;
+                        }
+                    }
+                    double pr = 100 / (double)co * j;
+                    prList += " completed by " + pr.ToString() + "% |";
+                }
+
+                if (links.Count > 0)
+                {
+                    prList += " Links: ";
+                    foreach (var item in links)
+                    {
+                        prList += item + " | ";
+                    }
+                }
+                prList += "\n";
+
+                if (part.Count > 0)
+                {
+                    lev.Add(0);
+                    List<int> ct2 = lev;
+                    int k = counter.Count;
+                    counter.Add(1);
+                    for (int i = 0; i < part.Count; i++)
+                    {
+                        List<int> ct = new List<int>();
+                        foreach (var item in counter)
+                        {
+                            ct.Add(item);
+                        }
+                        prList = part[i].WritePrList(prList, ct, ct2);
+                        counter[k]++;
+                        lev[k]++;
+                    }
                 }
             }
             return prList;
@@ -242,7 +249,24 @@ namespace IIdeaApp
             return deep;
         }
 
-
+        public Project Find(int _id)
+        {
+            if (id==_id)
+            {
+                return this;
+            }
+            else
+            {
+                for (int i = 0; i < part.Count; i++)
+                {
+                    if (part[i].Find(_id) != null)
+                    {
+                        return part[i].Find(_id);
+                    }
+                }
+            }
+            return null;
+        }
     }
 
 }

@@ -32,6 +32,11 @@ namespace IIdeaApp
 
         private void butSignUp_Click(object sender, EventArgs e)
         {
+            if (tbName.Text =="")
+            {
+                MessageBox.Show("Invalid user name.");
+                return;
+            }
             string address = "https://myprjmera.herokuapp.com/api/Conections";
             Conection conection = new Conection(tbName.Text, tbPass.Text);
             List<Conection> conections = new List<Conection>();

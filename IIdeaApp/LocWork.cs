@@ -165,5 +165,32 @@ namespace IIdeaApp
                 e.Handled = true;
             }
         }
+
+        private void LocWork_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btDelete_Click(object sender, EventArgs e)
+        {
+            Project project = projectsLock.Find(Convert.ToInt32(tbLink.Text));
+            if (project == null)
+            {
+                MessageBox.Show("This element does not exist.");
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show("This element and all its subtasks will be erased. Continue?", "Attention!", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.OK)
+                {
+                    projectsLock.Find(Convert.ToInt32(tbLink.Text)).ignore = true;
+                }
+            }
+            List<int> counter = new List<int>();
+            projectsLock.levels.Clear();
+            prList = projectsLock.WritePrList("", counter, projectsLock.levels);
+            con.SerProj(projectsLock);
+            rtbList.Text = prList;
+        }
     }
 }

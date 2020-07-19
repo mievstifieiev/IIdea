@@ -66,7 +66,6 @@
             this.tbAncestor = new System.Windows.Forms.TextBox();
             this.tbPoint = new System.Windows.Forms.TextBox();
             this.tbLink = new System.Windows.Forms.TextBox();
-            this.btLink = new System.Windows.Forms.Button();
             this.btDelete = new System.Windows.Forms.Button();
             this.btChangeStat = new System.Windows.Forms.Button();
             this.cbChange = new System.Windows.Forms.ComboBox();
@@ -376,24 +375,15 @@
             this.tbLink.TabIndex = 7;
             this.tbLink.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbLink_KeyPress);
             // 
-            // btLink
-            // 
-            this.btLink.Location = new System.Drawing.Point(130, 132);
-            this.btLink.Name = "btLink";
-            this.btLink.Size = new System.Drawing.Size(94, 29);
-            this.btLink.TabIndex = 8;
-            this.btLink.Text = "Add Link";
-            this.btLink.UseVisualStyleBackColor = true;
-            this.btLink.Click += new System.EventHandler(this.btLink_Click);
-            // 
             // btDelete
             // 
-            this.btDelete.Location = new System.Drawing.Point(251, 132);
+            this.btDelete.Location = new System.Drawing.Point(112, 132);
             this.btDelete.Name = "btDelete";
             this.btDelete.Size = new System.Drawing.Size(94, 29);
             this.btDelete.TabIndex = 10;
             this.btDelete.Text = "Delete";
             this.btDelete.UseVisualStyleBackColor = true;
+            this.btDelete.Click += new System.EventHandler(this.btDelete_Click);
             // 
             // btChangeStat
             // 
@@ -435,7 +425,6 @@
             this.Controls.Add(this.cbChange);
             this.Controls.Add(this.btChangeStat);
             this.Controls.Add(this.btDelete);
-            this.Controls.Add(this.btLink);
             this.Controls.Add(this.tbLink);
             this.Controls.Add(this.tbPoint);
             this.Controls.Add(this.tbAncestor);
@@ -445,6 +434,7 @@
             this.Name = "LocWork";
             this.Text = "LocWork";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LocWork_FormClosed);
+            this.Load += new System.EventHandler(this.LocWork_Load);
             this.menuStripLocWork.ResumeLayout(false);
             this.menuStripLocWork.PerformLayout();
             this.ResumeLayout(false);
@@ -489,7 +479,6 @@
         private System.Windows.Forms.TextBox tbAncestor;
         private System.Windows.Forms.TextBox tbPoint;
         private System.Windows.Forms.TextBox tbLink;
-        private System.Windows.Forms.Button btLink;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.Button btDelete;
