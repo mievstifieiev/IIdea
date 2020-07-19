@@ -89,25 +89,7 @@ namespace IIdeaApp
 
         private void btLink_Click(object sender, EventArgs e)
         {
-            List<string> projInList = new List<string>();
-            projectsLock.toJSONstring(projInList);
-            string jsonString = JsonSerializer.Serialize(projInList);
-            MessageBox.Show(jsonString);
-
-            projInList = null;
-            projInList = new List<string>();
-            projInList = JsonSerializer.Deserialize<List<string>>(jsonString);
-            projectsLock = new Project(projInList[0], projInList[1], Convert.ToInt32(projInList[2]), Convert.ToInt32(projInList[3]));
-            int i = 4;
-            while (i<projInList.Count)
-            {
-                projectsLock.PartAdd(projInList[i], projInList[i + 1], Convert.ToInt32(projInList[i + 2]), Convert.ToInt32(projInList[i+3]));
-                i += 4;
-            }
-            List<int> counter = new List<int>();
-            prList = projectsLock.WritePrList("", counter, projectsLock.levels);
-
-            rtbList.Text = prList;
+            
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) //кнопка синхронизации с сервером
