@@ -59,20 +59,27 @@ namespace IIdeaApp
 
         private void buttSignIn_Click(object sender, EventArgs e)
         {
+
             string address = "https://myprjmera.herokuapp.com/api/Conections";
             List<Conection> conections = new List<Conection>();
             Conection conection = new Conection();
             conections = conection.Http_GET(address);
+            bool nam = false;
             for (int i = 0; i < conections.Count; i++)
             {
                 if ((conections[i].Name == tbName.Text)&&(conections[i].Password == tbPass.Text))
                 {
                     conection = conections[i];
+                    LocWork locWork = new LocWork(this, conection, address); //создам новую форму
+                    locWork.Show();
+                    this.Hide();
+                    nam = true;
                 }
             }
-            LocWork locWork = new LocWork(this, conection, address); //создам новую форму
-            locWork.Show();
-            this.Hide();
+            if (nam == false)
+            {
+                MessageBox.Show("Invalid user name or password.");
+            }
         }
     }
 }
