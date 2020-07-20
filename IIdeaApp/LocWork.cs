@@ -65,19 +65,31 @@ namespace IIdeaApp
             }
             else
             {
-                if((prList.IndexOf(tbAncestor.Text)>-1)&&(tbLink.Text.Length>0))
+                if (prList != "")
                 {
-                    projectsLock.PartAdd(tbPoint.Text, tbAncestor.Text, Convert.ToInt32(tbLink.Text));
+                    if ((prList.IndexOf(tbAncestor.Text) > -1) && (tbLink.Text.Length > 0))
+                    {
+                        projectsLock.PartAdd(tbPoint.Text, tbAncestor.Text, Convert.ToInt32(tbLink.Text));
 
+                    }
+                    else
+                    {
+                        MessageBox.Show("An ancestor with this name or id was not found!");
+                        return;
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("An ancestor with this name or id was not found!");
+                    MessageBox.Show("To create a project, just fill in the 'Point's Name' field.");
+                    return;
                 }
             }
             projectsLock.levels.Clear();
             prList = projectsLock.WritePrList("", counter, projectsLock.levels);
-            con.SerProj(projectsLock);
+            if (con!=null)
+            {
+                con.SerProj(projectsLock);
+            }
             rtbList.Text = prList;
         }
 
@@ -94,39 +106,52 @@ namespace IIdeaApp
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) //кнопка синхронизации с сервером
         {
-            Conection conection = new Conection();
-            conection = con.Http_GET_id(url);
-            Project project = new Project();
-            project = conection.DeserProj();
-            List<int> counter = new List<int>();
-            string str = project.WritePrList("", counter, project.levels);
-            DialogResult result = MessageBox.Show(str, "Syncing will replace your current project with this one.", MessageBoxButtons.OKCancel);
-            if (result == DialogResult.OK)
+            if (con != null)
             {
-                con = conection;
-                projectsLock = project;
-                prList = str;
-                rtbList.Text = prList;
+                Conection conection = new Conection();
+                conection = con.Http_GET_id(url);
+                Project project = new Project();
+                project = conection.DeserProj();
+                List<int> counter = new List<int>();
+                string str = project.WritePrList("", counter, project.levels);
+                DialogResult result = MessageBox.Show(str, "Syncing will replace your current project with this one.", MessageBoxButtons.OKCancel);
+                if (result == DialogResult.OK)
+                {
+                    con = conection;
+                    projectsLock = project;
+                    prList = str;
+                    rtbList.Text = prList;
+                }
             }
         }
 
         private void btChangeStat_Click(object sender, EventArgs e)
         {
-            if (con != null)
+            if (tbIdStat.Text != "")
             {
-                if (con.Projects.Length < con.Http_GET_id(url).Projects.Length)
+                if (con != null)
                 {
-                    MessageBox.Show("Data from the server does not match data on the local device. " +
-                    "Sync your data before making changes by clicking the 'Sync' button in the menu.");
-                    return;
+                    if (con.Projects.Length < con.Http_GET_id(url).Projects.Length)
+                    {
+                        MessageBox.Show("Data from the server does not match data on the local device. " +
+                        "Sync your data before making changes by clicking the 'Sync' button in the menu.");
+                        return;
+                    }
                 }
+                List<int> counter = new List<int>();
+                projectsLock.StatusChange(cbChange.Text, Convert.ToInt32(tbIdStat.Text));
+                projectsLock.levels.Clear();
+                prList = projectsLock.WritePrList("", counter, projectsLock.levels);
+                if (con != null)
+                {
+                    con.SerProj(projectsLock);
+                }
+                rtbList.Text = prList;
             }
-            List<int> counter = new List<int>();
-            projectsLock.StatusChange(cbChange.Text, Convert.ToInt32(tbIdStat.Text));
-            projectsLock.levels.Clear();
-            prList = projectsLock.WritePrList("", counter, projectsLock.levels);
-            con.SerProj(projectsLock);
-            rtbList.Text = prList;
+            else
+            {
+                MessageBox.Show("Fill in the ID field.");
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,24 +198,34 @@ namespace IIdeaApp
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            Project project = projectsLock.Find(Convert.ToInt32(tbLink.Text));
-            if (project == null)
+            if (tbLink.Text!="")
             {
-                MessageBox.Show("This element does not exist.");
+                Project project = projectsLock.Find(Convert.ToInt32(tbLink.Text));
+                if (project == null)
+                {
+                    MessageBox.Show("This element does not exist.");
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("This element and all its subtasks will be erased. Continue?", "Attention!", MessageBoxButtons.OKCancel);
+                    if (result == DialogResult.OK)
+                    {
+                        projectsLock.Find(Convert.ToInt32(tbLink.Text)).ignore = true;
+                    }
+                }
+                List<int> counter = new List<int>();
+                projectsLock.levels.Clear();
+                prList = projectsLock.WritePrList("", counter, projectsLock.levels);
+                if (con != null)
+                {
+                    con.SerProj(projectsLock);
+                }
+                rtbList.Text = prList;
             }
             else
             {
-                DialogResult result = MessageBox.Show("This element and all its subtasks will be erased. Continue?", "Attention!", MessageBoxButtons.OKCancel);
-                if (result == DialogResult.OK)
-                {
-                    projectsLock.Find(Convert.ToInt32(tbLink.Text)).ignore = true;
-                }
+                MessageBox.Show("Fill in the ID field.");
             }
-            List<int> counter = new List<int>();
-            projectsLock.levels.Clear();
-            prList = projectsLock.WritePrList("", counter, projectsLock.levels);
-            con.SerProj(projectsLock);
-            rtbList.Text = prList;
         }
     }
 }
